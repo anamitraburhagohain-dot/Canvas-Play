@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Play</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            // Future extensions can be added here
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-dom": "https://esm.sh/react-dom@^19.1.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.10.0",
+    "path": "https://aistudiocdn.com/path@^0.12.7",
+    "vite": "https://aistudiocdn.com/vite@^7.1.3",
+    "url": "https://aistudiocdn.com/url@^0.11.4"
+  }
+}
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f4f5; /* zinc-100 */
+}
+html.dark body {
+    background-color: #18181b; /* zinc-900 */
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-container {
+  display: flex;
+  animation: marquee-scroll 30s ease-in-out infinite;
+}
+.marquee-text {
+  padding-right: 2rem; /* A gap between repeated texts */
+  white-space: nowrap;
+  flex-shrink: 0; /* Prevent content from shrinking */
+}
+
+@keyframes marquee-scroll-sidebar {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-container-sidebar {
+  display: flex;
+  animation: marquee-scroll-sidebar 40s ease-in-out infinite;
+}
+.marquee-text-sidebar {
+  padding-right: 2rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes scale-in {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes rotateSun {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes wobbleMoon {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+}
+
+.sun-icon {
+    animation: rotateSun 20s linear infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.moon-icon {
+    animation: wobbleMoon 6s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+@keyframes driftCloud {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(2px); }
+}
+
+@keyframes fall {
+    from { transform: translateY(-2px); opacity: 1; }
+    to { transform: translateY(8px); opacity: 0; }
+}
+
+.cloud-icon {
+    animation: driftCloud 8s ease-in-out infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+.rain-drop, .snow-flake {
+    animation: fall 1.5s linear infinite;
+}
+
+.force-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+.force-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.force-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #a1a1aa; /* zinc-400 */
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+html.dark .force-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #71717a; /* zinc-500 */
+}
+.force-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #a1a1aa transparent;
+}
+
+@keyframes love-highlight-effect {
+  0% {
+    background-color: rgba(239, 68, 68, 0.4); /* red-500 with 40% opacity */
+    transform: scale(1.3);
+  }
+  100% {
+    background-color: rgba(239, 68, 68, 0);
+    transform: scale(1);
+  }
+}
+
+.animate-love-highlight {
+  animation: love-highlight-effect 0.5s ease-out forwards;
+}
+
+@keyframes like-effect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+.animate-like {
+  animation: like-effect 0.3s ease-in-out;
+}
+
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .header-container {
+    padding-top: 0.5rem !important;
+  }
+  .header-greeting-container {
+    margin-top: 1rem !important;
+  }
+}
+
+/* Tablet simulation for landscape mode */
+@media (orientation: landscape) and (min-height: 501px) {
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2d3748; /* Dark blue-gray backdrop */
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+
+  #root {
+    width: 100%;
+    height: 100%;
+    max-width: 1180px;
+    max-height: 820px;
+    border-radius: 24px;
+    border: 14px solid #111; /* Bezel */
+    box-shadow: 0 0 50px rgba(0,0,0,0.7);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Let the app's internal components handle scrolling */
+  #root > div {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Hide the empty footer in tablet mode */
+  footer {
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

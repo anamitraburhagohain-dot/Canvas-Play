@@ -1,0 +1,9 @@
+{
+  "name": "Canvas Play",
+  "description": "Canvas Play is an interactive learning platform with AI-powered features to enhance your study experience.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "orientation": "any",
+  "prompt": ""
+}
