@@ -9,7 +9,6 @@ interface TabsProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
   isSubscribed: boolean;
-  isAdmin: boolean;
 }
 
 const ChevronDoubleLeftIcon: React.FC = () => (
@@ -24,7 +23,7 @@ const ChevronDoubleRightIcon: React.FC = () => (
     </svg>
 );
 
-const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onTabChange, isSubscribed, isAdmin }) => {
+const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onTabChange, isSubscribed }) => {
   const proTabs = ['Current Affairs', 'G.K'];
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftIndicator, setShowLeftIndicator] = useState(false);
@@ -63,7 +62,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onTabChange, isSubscribed,
         resizeObserver.disconnect();
         window.removeEventListener('resize', checkScrollability);
     };
-  }, [tabs, isAdmin, checkScrollability]);
+  }, [tabs, checkScrollability]);
 
   const handleScroll = (direction: 'left' | 'right') => {
     const el = scrollContainerRef.current;
@@ -126,17 +125,6 @@ const Tabs: React.FC<TabsProps> = ({ tabs, activeTab, onTabChange, isSubscribed,
                     </button>
                 );
                 })}
-
-                {isAdmin && (
-                <button
-                    key="Admin"
-                    onClick={() => onTabChange('Admin')}
-                    className={getButtonClasses('Admin', activeTab === 'Admin')}
-                    aria-current={activeTab === 'Admin' ? 'page' : undefined}
-                    >
-                    Admin
-                    </button>
-                )}
             </div>
         </div>
 

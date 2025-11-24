@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -30,7 +31,7 @@ const BulbIcon = () => (
         </defs>
 
         {/* Pulsating Glow, clipped to the bulb's shape */}
-        <g clip-path="url(#bulb-clip-path)">
+        <g clipPath="url(#bulb-clip-path)">
             <ellipse cx="10" cy="8" rx="8" ry="8" fill="url(#bulb-glow-gradient-inside)">
                 <animate 
                     attributeName="rx"

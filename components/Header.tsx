@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -21,51 +22,12 @@ const CalendarIcon: React.FC = () => (
     </svg>
 );
 
-// --- START: LearnerBoostToggle component ---
-interface LearnerBoostToggleProps {
-  activeHub: 'learning' | 'community';
-  onHubChange: (hub: 'learning' | 'community') => void;
-}
-
-const LearnerBoostToggle: React.FC<LearnerBoostToggleProps> = ({ activeHub, onHubChange }) => {
-  const isLearner = activeHub === 'learning';
-  return (
-    <div className="relative w-36 h-9 p-1 bg-zinc-200 dark:bg-zinc-900 rounded-full flex items-center">
-      {/* Sliding background */}
-      <div
-        className={`absolute top-1 left-1 h-7 w-[calc(50%-4px)] rounded-full transition-all duration-300 ease-in-out shadow-md ${
-          isLearner ? 'bg-green-600 translate-x-full' : 'bg-red-600 translate-x-0'
-        }`}
-      ></div>
-      
-      {/* Buttons */}
-      <button
-        onClick={() => onHubChange('community')}
-        className={`relative z-10 w-1/2 h-full rounded-full text-[11px] font-semibold transition-colors duration-300 ${
-          !isLearner ? 'text-white' : 'text-zinc-500 dark:text-zinc-400'
-        }`}
-      >
-        Boost
-      </button>
-      <button
-        onClick={() => onHubChange('learning')}
-        className={`relative z-10 w-1/2 h-full rounded-full text-[11px] font-semibold transition-colors duration-300 ${
-          isLearner ? 'text-white' : 'text-zinc-500 dark:text-zinc-400'
-        }`}
-      >
-        Learner
-      </button>
-    </div>
-  );
-};
-// --- END: LearnerBoostToggle component ---
 
 type LocationSearchResult = { name: string; lat: number; lon: number };
 
 interface HeaderProps {
     isSubscribed: boolean;
     onOpenSubscriptionModal: () => void;
-    onOpenContributionModal: () => void;
     onOpenProfilePicModal: () => void;
     isDarkMode: boolean;
     onToggleDarkMode: () => void;
@@ -76,9 +38,6 @@ interface HeaderProps {
     profilePic: string | null;
     wallpaper: string;
     onSetWallpaper: (svg: string) => void;
-    isAdmin: boolean;
-    onAdminLoginRequest: () => void;
-    onNavigateToAdmin: () => void;
     userProfile: UserAccount;
     onOpenDataAnalyticsModal: () => void;
     onOpenEditProfileModal: () => void;
@@ -95,8 +54,7 @@ interface HeaderProps {
     selectedAssistant: string;
     onSetAssistant: (svg: string) => void;
     onOpenAssistantModal: () => void;
-    activeHub: 'learning' | 'community';
-    onHubChange: (hub: 'learning' | 'community') => void;
+    onOpenAdminLogin: () => void;
 }
 
 interface WeatherData {
@@ -108,7 +66,7 @@ interface WeatherData {
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
-    const { wallpaper, userProfile, date, location, isDarkMode, selectedAssistant, onOpenAssistantModal, activeHub, onHubChange } = props;
+    const { wallpaper, userProfile, date, location, isDarkMode, selectedAssistant, onOpenAssistantModal } = props;
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [greeting, setGreeting] = useState('');
     const [weatherData, setWeatherData] = useState<WeatherData | 'error' | 'loading'>('loading');
@@ -244,7 +202,6 @@ const Header: React.FC<HeaderProps> = (props) => {
                 
                 {/* Right Container */}
                 <div className="relative flex-1 flex justify-end items-center gap-4" ref={settingsRef}>
-                    <LearnerBoostToggle activeHub={activeHub} onHubChange={onHubChange} />
                     <button
                         onClick={() => setIsSettingsOpen(prev => !prev)}
                         className="p-1.5 bg-black/20 dark:bg-black/40 rounded-full group transition-colors hover:bg-black/30"

@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -83,7 +84,6 @@ const AssistantModal: React.FC<AssistantModalProps> = ({ isOpen, onClose, histor
   return (
     <div 
       className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-0 md:p-4 animate-fade-in"
-      onClick={onClose}
     >
       <div 
         className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-zinc-200/50 dark:border-zinc-700/50 md:border w-full h-full md:w-full md:max-w-2xl md:h-[70vh] rounded-none md:rounded-2xl shadow-2xl relative flex flex-col"
@@ -100,7 +100,7 @@ const AssistantModal: React.FC<AssistantModalProps> = ({ isOpen, onClose, histor
             </div>
             <div>
               <h2 id="assistant-title" className="text-lg font-bold text-zinc-900 dark:text-white">{assistantName}, your AI Assistant</h2>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">Powered by Gemini</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">Powered by Google</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-full text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800" aria-label="Close Assistant">

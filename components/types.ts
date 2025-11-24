@@ -54,7 +54,7 @@ export interface NewsFlashItem {
   story: string;
 }
 
-export type WeatherCondition = 'Sunny' | 'Moon' | 'PartlyCloudyDay' | 'PartlyCloudyNight' | 'MostlyCloudyDay' | 'MostlyCloudyNight' | 'Cloudy' | 'Rain' | 'Snow' | 'Thunderstorm' | 'Fog' | 'Windy';
+export type WeatherCondition = 'Sunny' | 'Moon' | 'PartlyCloudyDay' | 'PartlyCloudyNight' | 'MostlyCloudyDay' | 'MostlyCloudyNight' | 'Cloudy' | 'Rain' | 'Snow' | 'Thunderstorm' | 'Fog' | 'Windy' | 'Mist' | 'Dew';
 
 export interface GroundingSource {
   web: {

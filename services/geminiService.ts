@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -170,18 +171,110 @@ ${text}
 };
 
 export const getWeatherData = async (latitude: number, longitude: number, bypassCache = false): Promise<{ temperature: number; condition: WeatherCondition, forecast: string, sources: GroundingSource[], timestamp: number }> => {
-    console.log("Weather API call is disabled for development. Returning mock data.");
-    
-    // Return a static, hardcoded weather object to avoid API calls during development.
-    const mockWeatherData = {
-        temperature: 28,
-        condition: 'PartlyCloudyDay' as WeatherCondition,
-        forecast: 'Sunny skies ahead. Happy coding!',
-        sources: [],
-        timestamp: Date.now()
-    };
-    
-    return Promise.resolve(mockWeatherData);
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+    // Round to 3 decimal places to group users in very close proximity
+    const cacheKey = `weather-${latitude.toFixed(3)}-${longitude.toFixed(3)}`;
+    const CACHE_DURATION = 10 * 60 * 1000; // Reduced to 10 minutes for better reliability
+
+    if (!bypassCache) {
+        try {
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) {
+                const data = JSON.parse(cached);
+                if (Date.now() - data.timestamp < CACHE_DURATION) {
+                    console.log("Returning cached weather data");
+                    return data;
+                }
+            }
+        } catch (error) {
+            console.warn("Cache read error", error);
+        }
+    }
+
+    const prompt = `
+    Find the CURRENT, REAL-TIME weather for coordinates: ${latitude}, ${longitude}.
+    Do NOT provide the daily forecast summary, only the weather conditions right now.
+
+    1. Determine the exact current temperature in Celsius.
+    2. Determine the specific sky condition (e.g. Clear, Cloudy, Rain, Mist, Dew).
+    3. Determine if it is currently Day or Night at the location.
+
+    Based on the findings, choose exactly ONE Condition from this list:
+    - 'Sunny' (Use this for Clear skies during the Day)
+    - 'Moon' (Use this for Clear skies at Night)
+    - 'PartlyCloudyDay' (Partly cloudy during Day)
+    - 'PartlyCloudyNight' (Partly cloudy at Night)
+    - 'Cloudy' (Overcast)
+    - 'Rain'
+    - 'Snow'
+    - 'Thunderstorm'
+    - 'Fog'
+    - 'Mist'
+    - 'Dew'
+    - 'Windy'
+
+    Strictly follow this format for the output:
+    Temperature: [number]
+    Condition: [Condition Code]
+    Forecast: [A short, engaging 1-sentence summary of the current weather]
+    `;
+
+    try {
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                tools: [{ googleSearch: {} }],
+                temperature: 0.2, // Lower temperature for more deterministic output
+            }
+        });
+
+        const text = response.text || "";
+        const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+        
+        const sources: GroundingSource[] = groundingChunks
+            .filter((c: any) => c.web)
+            .map((c: any) => ({
+                web: { uri: c.web.uri, title: c.web.title }
+            }));
+
+        const tempMatch = text.match(/Temperature:\s*(-?\d+)/i);
+        const condMatch = text.match(/Condition:\s*(\w+)/i);
+        const foreMatch = text.match(/Forecast:\s*(.+)/i);
+
+        const temperature = tempMatch ? parseInt(tempMatch[1]) : 20;
+        let condition = (condMatch ? condMatch[1] : 'Sunny') as WeatherCondition;
+        const forecast = foreMatch ? foreMatch[1].trim() : "Current weather updated.";
+
+        // Fallback validation
+        const validConditions: WeatherCondition[] = ['Sunny', 'Moon', 'PartlyCloudyDay', 'PartlyCloudyNight', 'MostlyCloudyDay', 'MostlyCloudyNight', 'Cloudy', 'Rain', 'Snow', 'Thunderstorm', 'Fog', 'Windy', 'Mist', 'Dew'];
+        
+        // Intelligent fallback mapping if the model goes slightly off-script
+        if (!validConditions.includes(condition)) {
+            if (condition.includes('Clear')) condition = 'Sunny'; 
+            else if (condition.includes('Night')) condition = 'Moon';
+            else condition = 'PartlyCloudyDay';
+        }
+
+        const data = { temperature, condition, forecast, sources, timestamp: Date.now() };
+        try {
+            localStorage.setItem(cacheKey, JSON.stringify(data));
+        } catch (e) {
+             console.warn("Failed to cache weather data", e);
+        }
+        return data;
+
+    } catch (error) {
+        console.error("Weather API Error:", error);
+        // Fallback mock data with less specific info to avoid confusion
+        return {
+            temperature: 20,
+            condition: 'Sunny',
+            forecast: 'Live weather unavailable. Enjoy your day!',
+            sources: [],
+            timestamp: Date.now()
+        };
+    }
 };
 
 // In-memory cache for place searches to prevent rate-limiting when typing.

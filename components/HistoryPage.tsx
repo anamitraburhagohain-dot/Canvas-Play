@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -16,12 +17,11 @@ interface HistoryPageProps {
   isSubscribed: boolean;
   onMarkAsComplete: (subject: string, chapterId: number) => void;
   onQuizComplete: (subject: string, chapterId: number, score: number) => void;
-  isAdmin: boolean;
-  onNavigateToAdmin: () => void;
   aiFeaturesEnabled: boolean;
   selectedChapterId: number | undefined;
   onSelectChapter: (id: number) => void;
   searchHighlightQuery: string | null;
+  onOpenContributionModal: (subject: string, chapterId: number, chapterTitle: string) => void;
 }
 
 const CircularProgress: React.FC<{ progress: number }> = ({ progress }) => {
@@ -77,8 +77,9 @@ const MenuIcon = () => (
 const HistoryPage: React.FC<HistoryPageProps> = (props) => {
   const { 
     subject, chapters, cachedChapterKeys, toggleChapterCache, isSubscribed, 
-    onMarkAsComplete, onQuizComplete, isAdmin, onNavigateToAdmin, 
-    aiFeaturesEnabled, selectedChapterId, onSelectChapter, searchHighlightQuery
+    onMarkAsComplete, onQuizComplete, 
+    aiFeaturesEnabled, selectedChapterId, onSelectChapter, searchHighlightQuery,
+    onOpenContributionModal
   } = props;
 
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
@@ -210,10 +211,9 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
             cachedChapterKeys={cachedChapterKeys}
             toggleChapterCache={toggleChapterCache}
             isSubscribed={isSubscribed}
-            isAdmin={isAdmin}
-            onNavigateToAdmin={onNavigateToAdmin}
             aiFeaturesEnabled={aiFeaturesEnabled}
             searchHighlightQuery={searchHighlightQuery}
+            onOpenContributionModal={onOpenContributionModal}
           />
         </main>
       </div>

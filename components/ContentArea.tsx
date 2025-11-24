@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -15,32 +16,25 @@ interface ContentAreaProps {
   cachedChapterKeys: string[];
   toggleChapterCache: (subject: string, chapterId: number) => void;
   isSubscribed: boolean;
-  isAdmin: boolean;
-  onNavigateToAdmin: () => void;
   aiFeaturesEnabled: boolean;
   searchHighlightQuery: string | null;
+  onOpenContributionModal: (subject: string, chapterId: number, chapterTitle: string) => void;
 }
 
-const TranslateIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+const TranslateIcon: React.FC<{ className?: string }> = ({ className = "h-4 w-4" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502" />
     </svg>
 );
 
-const DownloadIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+const DownloadIcon: React.FC<{ className?: string }> = ({ className = "h-4 w-4" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
     </svg>
 );
 
-const ReviewIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-    </svg>
-);
-
-const CheckCircleIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+const CheckCircleIcon: React.FC<{ className?: string }> = ({ className = "h-4 w-4" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 20 20" fill="currentColor">
         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
     </svg>
 );
@@ -75,7 +69,21 @@ const CheckIconMini: React.FC = () => (
     </svg>
 );
 
-const ContentArea: React.FC<ContentAreaProps> = ({ chapter, subject, onMarkAsComplete, onStartQuiz, cachedChapterKeys, toggleChapterCache, isSubscribed, isAdmin, onNavigateToAdmin, aiFeaturesEnabled, searchHighlightQuery }) => {
+const ContributeIcon: React.FC<{ className?: string }> = ({ className = "h-4 w-4" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none">
+        <defs>
+            <linearGradient id="vivid-pen-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#F472B6" />
+                <stop offset="50%" stopColor="#C084FC" />
+                <stop offset="100%" stopColor="#6366F1" />
+            </linearGradient>
+        </defs>
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-300 dark:text-zinc-600"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" fill="url(#vivid-pen-gradient)" stroke="none" />
+    </svg>
+);
+
+const ContentArea: React.FC<ContentAreaProps> = ({ chapter, subject, onMarkAsComplete, onStartQuiz, cachedChapterKeys, toggleChapterCache, isSubscribed, aiFeaturesEnabled, searchHighlightQuery, onOpenContributionModal }) => {
   const [isTranslating, setIsTranslating] = useState(false);
   const [translation, setTranslation] = useState<{ text: string; language: string; contentIndex: number; } | null>(null);
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
@@ -114,13 +122,12 @@ const ContentArea: React.FC<ContentAreaProps> = ({ chapter, subject, onMarkAsCom
   // Effect to scroll to highlighted text from search
   useEffect(() => {
     if (searchHighlightQuery && contentDisplayRef.current) {
-        // Use a short timeout to allow the DOM to update after the render
         const timer = setTimeout(() => {
             const firstHighlight = contentDisplayRef.current?.querySelector('mark');
             if (firstHighlight) {
                 firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
-        }, 100); // 100ms delay for DOM to settle
+        }, 100);
 
         return () => clearTimeout(timer);
     }
@@ -213,14 +220,11 @@ const ContentArea: React.FC<ContentAreaProps> = ({ chapter, subject, onMarkAsCom
     const escapedQuery = searchHighlightQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(`(${escapedQuery})`, 'gi');
     
-    // Split by tags to avoid replacing text inside tag attributes
     const parts = finalHtml.split(/(<[^>]*>)/g);
     const highlightedParts = parts.map(part => {
-        // If part is a tag (e.g., "<p>", "</h1>"), or empty, leave it as is.
         if (part.match(/<[^>]*>/) || !part) {
             return part; 
         }
-        // It's text content, replace the query
         return part.replace(regex, `<mark class="bg-yellow-200 dark:bg-amber-400/30 rounded px-1 py-0.5">$1</mark>`);
     });
 
@@ -237,28 +241,35 @@ const ContentArea: React.FC<ContentAreaProps> = ({ chapter, subject, onMarkAsCom
               {subtitle && <p className="text-base md:text-lg text-zinc-500 dark:text-zinc-500 mt-1">{subtitle}</p>}
           </div>
           
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-              <button onClick={() => toggleChapterCache(subject, chapter.id)} className={`flex items-center justify-center gap-2 text-sm font-medium px-4 h-10 rounded-full border transition-colors ${isCached ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 border-green-300 dark:border-green-700' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700'}`}>
-                  {isCached ? <CheckCircleIcon/> : <DownloadIcon />}
-                  <span>{isCached ? 'Saved Offline' : 'Save for Offline'}</span>
+          <div className="mt-4 flex flex-row flex-nowrap items-center gap-2 overflow-x-auto scrollbar-hide">
+              <button onClick={() => toggleChapterCache(subject, chapter.id)} className={`flex-shrink-0 flex items-center justify-center gap-1.5 text-xs font-medium px-3 h-8 rounded-full border transition-colors ${isCached ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 border-green-300 dark:border-zinc-700' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700'}`}>
+                  {isCached ? <CheckCircleIcon className="animate-checkmark w-4 h-4" /> : <DownloadIcon className="w-4 h-4" />}
+                  <span className="whitespace-nowrap">{isCached ? 'Saved' : 'Save for Offline'}</span>
               </button>
               
+              <button
+                  onClick={() => onOpenContributionModal(subject, chapter.id, chapter.title)}
+                  className="flex-shrink-0 flex items-center justify-center gap-1.5 text-xs font-medium px-3 h-8 rounded-full border transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+              >
+                  <ContributeIcon className="w-4 h-4" />
+                  <span className="whitespace-nowrap">Suggest Edit</span>
+              </button>
+
               {aiFeaturesEnabled && (
-                <div className="relative" ref={translateButtonRef}>
+                <div className="relative inline-block flex-shrink-0" ref={translateButtonRef}>
                     <button
                         onClick={() => setIsLanguageMenuOpen(prev => !prev)}
                         disabled={isTranslating || !isSubscribed}
-                        className="flex items-center justify-center gap-2 text-sm font-medium px-4 h-10 rounded-full border bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center justify-center gap-1.5 text-xs font-medium px-3 h-8 rounded-full border bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed"
                         title={!isSubscribed ? "Translation is a PRO feature. Please upgrade." : "Translate content"}
                     >
-                        <TranslateIcon />
+                        <TranslateIcon className="w-4 h-4" />
                         <span>Translate</span>
                         {!isSubscribed && (
-                          <span className="font-bold text-[7px] tracking-wider uppercase px-1.5 py-0.5 rounded bg-zinc-500 text-white">
+                          <span className="font-bold text-[7px] tracking-wider uppercase px-1.5 py-0.5 rounded bg-zinc-500 text-white ml-1">
                             PRO
                           </span>
                         )}
-                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 transition-transform ${isLanguageMenuOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
                     </button>
                     {isLanguageMenuOpen && (
                         <div className="absolute left-0 mt-2 w-48 bg-white dark:bg-zinc-800 rounded-md shadow-lg border border-zinc-200 dark:border-zinc-700 z-10 animate-fade-in">
@@ -286,17 +297,6 @@ const ContentArea: React.FC<ContentAreaProps> = ({ chapter, subject, onMarkAsCom
                         </div>
                     )}
                 </div>
-              )}
-
-              {isAdmin && (
-                <button
-                    onClick={onNavigateToAdmin}
-                    className="flex items-center justify-center gap-2 text-sm font-medium px-4 h-10 rounded-full border bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700"
-                    title="Review user submissions"
-                >
-                    <ReviewIcon />
-                    <span>Review</span>
-                </button>
               )}
           </div>
 

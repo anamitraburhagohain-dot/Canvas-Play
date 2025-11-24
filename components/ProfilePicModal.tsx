@@ -80,7 +80,6 @@ const ProfilePicModal: React.FC<ProfilePicModalProps> = ({ isOpen, onClose, onSa
   return (
     <div 
       className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
-      onClick={onClose}
       aria-modal="true"
       role="dialog"
     >

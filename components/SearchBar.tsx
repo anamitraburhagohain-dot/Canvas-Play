@@ -37,6 +37,12 @@ const ClearIcon = () => (
     </svg>
 );
 
+const CloseIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+);
+
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch, results, onResultClick }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState('');
@@ -206,7 +212,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, results, onResultClick 
 
             {/* Search Modal (Open State) */}
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex flex-col justify-end animate-fade-in" onClick={handleClose}>
+                <div className="fixed inset-0 z-50 flex flex-col justify-end animate-fade-in">
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
                     
                     <div 
@@ -215,6 +221,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, results, onResultClick 
                     >
                         {/* Input field container */}
                         <div className="p-4 border-b border-zinc-200 dark:border-zinc-700 flex-shrink-0">
+                            <button
+                                onClick={handleClose}
+                                className="absolute top-4 right-4 p-2 rounded-full text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors z-20"
+                                aria-label="Close search"
+                            >
+                                <CloseIcon />
+                            </button>
                             <div className="relative">
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                                     <SearchIconInput />

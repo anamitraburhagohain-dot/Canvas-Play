@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -21,16 +22,15 @@ const NightModeIcon = () => (
     </svg>
 );
 const SubscriptionIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3z" /><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" /></svg>;
-const GiftIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>;
 const LogoutIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>;
 const CheckIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>;
 const CameraIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" /></svg>;
 const EditIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z" /></svg>;
 const AnalyticsIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4v16a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4" /></svg>;
 const NotificationIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>;
-const AdminIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>;
 const ArrowRightIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>;
 const LocationMarkerIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
+const ShieldCheckIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>;
 
 type LocationSearchResult = { name: string; lat: number; lon: number };
 
@@ -40,19 +40,18 @@ interface SettingsMenuProps {
   isDarkMode: boolean; onToggleDarkMode: () => void;
   isNightMode: boolean; onToggleNightMode: () => void;
   isSubscribed: boolean; onOpenSubscriptionModal: () => void;
-  onOpenContributionModal: () => void;
   onOpenProfilePicModal: () => void;
   onLogout: () => void;
   subscriptionDate: Date | null;
   profilePic: string | null;
   wallpaper: string; onSetWallpaper: (svg: string) => void;
-  isAdmin: boolean; onAdminLoginRequest: () => void; onNavigateToAdmin: () => void;
   userProfile: { name: string; email: string; };
   onOpenDataAnalyticsModal: () => void;
   onOpenEditProfileModal: () => void;
   notificationsEnabled: boolean; onToggleNotificationsEnabled: () => void;
   homeLocation: { lat: number; lon: number; name: string } | null; onHomeLocationSearch: (query: string) => void; homeLocationResults: LocationSearchResult[]; isSearchingHomeLocation: boolean; onSetHomeLocation: (location: LocationSearchResult) => void; onClearHomeLocation: () => void;
   selectedAssistant: string; onSetAssistant: (svg: string) => void;
+  onOpenAdminLogin: () => void;
 }
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
@@ -90,7 +89,7 @@ const ToggleSwitch: React.FC<{ checked: boolean; onChange: () => void; }> = ({ c
 );
 
 const SettingsMenu: React.FC<SettingsMenuProps> = (props) => {
-    const { isOpen, onLogout, profilePic, userProfile, onClose, onOpenProfilePicModal, onOpenEditProfileModal, isDarkMode, onToggleDarkMode, isNightMode, onToggleNightMode, wallpaper, onSetWallpaper, selectedAssistant, onSetAssistant, isSubscribed, subscriptionDate, onOpenSubscriptionModal, onOpenDataAnalyticsModal, notificationsEnabled, onToggleNotificationsEnabled, homeLocation, onHomeLocationSearch, homeLocationResults, isSearchingHomeLocation, onSetHomeLocation, onClearHomeLocation, onOpenContributionModal, isAdmin, onAdminLoginRequest, onNavigateToAdmin } = props;
+    const { isOpen, onLogout, profilePic, userProfile, onClose, onOpenProfilePicModal, onOpenEditProfileModal, isDarkMode, onToggleDarkMode, isNightMode, onToggleNightMode, wallpaper, onSetWallpaper, selectedAssistant, onSetAssistant, isSubscribed, subscriptionDate, onOpenSubscriptionModal, onOpenDataAnalyticsModal, notificationsEnabled, onToggleNotificationsEnabled, homeLocation, onHomeLocationSearch, homeLocationResults, isSearchingHomeLocation, onSetHomeLocation, onClearHomeLocation, onOpenAdminLogin } = props;
     
     const [isEditingLocation, setIsEditingLocation] = useState(false);
     const [locationQuery, setLocationQuery] = useState('');
@@ -268,21 +267,11 @@ const SettingsMenu: React.FC<SettingsMenuProps> = (props) => {
                     )}
                 </Section>
                 
-                <Section title="Community">
-                    <SettingsRow isButton onClick={onOpenContributionModal} icon={<GiftIcon />} label="Contribute Content" description="Share your knowledge with others">
-                         <ArrowRightIcon />
+                <Section title="Administration">
+                    <SettingsRow isButton onClick={onOpenAdminLogin} icon={<ShieldCheckIcon />} label="Admin Dashboard" description="Manage content and contributions">
+                        <ArrowRightIcon />
                     </SettingsRow>
-                    {isAdmin ? (
-                        <SettingsRow isButton onClick={onNavigateToAdmin} icon={<AdminIcon />} label="Admin Panel" description="Manage content and contributions">
-                           <ArrowRightIcon />
-                        </SettingsRow>
-                    ) : (
-                         <SettingsRow isButton onClick={onAdminLoginRequest} icon={<AdminIcon />} label="Admin Login" description="Access the admin dashboard">
-                           <ArrowRightIcon />
-                        </SettingsRow>
-                    )}
                 </Section>
-
             </div>
             
              {/* Footer */}
