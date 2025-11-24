@@ -1,5 +1,3 @@
-
-
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -140,7 +138,21 @@ export const App: React.FC = () => {
     const [chatHistory, setChatHistory] = useState<{ role: 'user' | 'model', content: string }[]>([]);
     const [chatIsLoading, setChatIsLoading] = useState(false);
     const chatRef = useRef<Chat | null>(null);
-    const ai = useMemo(() => new GoogleGenAI({ apiKey: process.env.API_KEY! }), []);
+    
+    // Safe initialization of AI Client
+    const ai = useMemo(() => {
+        try {
+            const key = process.env.API_KEY;
+            if (!key) {
+                console.warn("API Key is missing. AI features will be disabled.");
+                return null;
+            }
+            return new GoogleGenAI({ apiKey: key });
+        } catch (error) {
+            console.error("Failed to initialize Gemini Client:", error);
+            return null;
+        }
+    }, []);
 
     // Search states
     const [homeLocationResults, setHomeLocationResults] = useState<LocationSearchResult[]>([]);
@@ -413,6 +425,16 @@ export const App: React.FC = () => {
     }, [selectedAssistant]);
 
     const openAssistantModal = () => {
+        if (!aiFeaturesEnabled) {
+            alert("AI features are currently disabled by the administrator.");
+            return;
+        }
+        
+        if (!ai) {
+            alert("AI Assistant is currently unavailable. Please check your internet connection or API key configuration.");
+            return;
+        }
+
         const currentSubject = activeTab;
         const currentChapterId = selectedChapterIds[currentSubject];
         const currentChapter = chaptersData[currentSubject]?.find(c => c.id === currentChapterId);
@@ -425,21 +447,17 @@ export const App: React.FC = () => {
 
         const systemInstruction = `You are "${assistantInfo.id}", a friendly, encouraging, and knowledgeable personal AI assistant for the "Canvas Play" educational app. Your goal is to help users with all their questions and doubts. Be proactive, concise, and use a conversational tone. Never break character. Current context: ${context}`;
         
-        if (aiFeaturesEnabled) {
-            chatRef.current = ai.chats.create({
-                model: 'gemini-2.5-flash',
-                config: {
-                    systemInstruction,
-                },
-            });
+        chatRef.current = ai.chats.create({
+            model: 'gemini-2.5-flash',
+            config: {
+                systemInstruction,
+            },
+        });
 
-            setChatHistory([
-                { role: 'model', content: `Hi! I'm ${assistantInfo.id}, your personal assistant for all your questions and doubts. How can I help you today?` }
-            ]);
-            setIsAssistantModalOpen(true);
-        } else {
-            alert("AI features are currently disabled by the administrator.");
-        }
+        setChatHistory([
+            { role: 'model', content: `Hi! I'm ${assistantInfo.id}, your personal assistant for all your questions and doubts. How can I help you today?` }
+        ]);
+        setIsAssistantModalOpen(true);
     };
 
     const closeAssistantModal = () => {
